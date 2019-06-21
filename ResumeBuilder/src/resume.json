@@ -1,0 +1,119 @@
+
+{
+	"name": "Ankush Nair",
+	"email": "ankushunair@gmail.com",
+	"phone": "9794727610",
+	"address": "Kaveri Boys Hostel, Nitte Meenakshi Institute of Technology",
+	"image": "https://www.hellointern.com/uploades/student/dp/ea52073e1f9f2600790317a9bdcc9b74.jpg?20190605141628",
+	"experiences" : [
+		{
+			"title" : "Intern",
+			"period": "June-July(2019)",
+			"company": "MindMatrix, Bangalore",
+			"companyURL": "www.google.com",
+			"details": "Learning how to complete project, IoT based project successfully with complete support from MindMatrix and team."
+		}
+	],
+	"projects": [
+		{
+			"name":"Data Analysis on Airplane crash dataset",
+			"url": "ankushunair@gmail.com",
+			"detail": "A complete analysis and visualizaion done on the above mentioned dataset using charts, Graphs etc."
+		},
+		{
+			"name":"To-Do List application using Java Swing",
+			"url": "ankushunair@gmail.com",
+			"detail": "A general usage To-Do list to keep track of upcoming events and reminders."
+		},
+		{
+			"name":"Tour and Travel Website designed using Web Development tools",
+			"url": "ankushunair@gmail.com",
+			"detail": "A responsive tour and travel website designed to help users to plan and book tours."
+		},
+		{
+			"name":"Steganography using python",
+			"url": "ankushunair@gmail.com",
+			"detail": "Crptography technique, Steganography implementation using python to hide texts in image and also decrypt it at the receiver end."
+		},
+		{
+			"name":"Car Rental System using Python Tkinter toolkit and MongoDB",
+			"url": "ankushunair@gmail.com",
+			"detail": "A system developed using Python Tkinter to rent cars, update details and save it in using MongoDB."
+		}
+	],
+	"skills": [
+		{
+			"name": "Data Science using Python",
+			"percent": "80%"
+		},
+		{
+			"name": "Java and J2EE",
+			"percent": "80%"
+		},
+		{
+			"name": "C and C++",
+			"percent": "90%"
+		},
+		{
+			"name": "Javascript & jQuery",
+			"percent": "70%"
+		},
+		{
+			"name": "PHP",
+			"percent": "60%"
+		},
+		{
+			"name": "DBMS and MySQL",
+			"percent": "75%"
+		},
+		{
+			"name": "HTML5 & CSS",
+			"percent": "99%"
+		},
+		{
+			"name": "Ruby on Rails",
+			"percent": "70%"
+		}
+	],
+	"education": [
+		{
+			"degree": "B.E in Computer Science",
+			"university": "VTU",
+			"college": "Nitte Meenakshi Institute of Technology",
+			"period": "2016 - 2020"
+		},
+		{
+			"degree": "Senior Secondary Education",
+			"university": "Army School",
+			"period": "2013 - 2015"
+		}
+	],
+	"languages": [
+		{
+			"name":"English",
+			"details": "Professional"
+		},
+		{
+			"name":"Hindi",
+			"details": "Professional"
+		},
+		{
+			"name":"Malayalam",
+			"details": "Native"
+		}
+	],
+
+	"interests": [
+		"Gaming",
+		"Cricket",
+		"Movies",
+		"Cooking",
+		"Eating","Coding"
+	]
+}
+
+
+
+
+
+
