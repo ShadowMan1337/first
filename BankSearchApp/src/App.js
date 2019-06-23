@@ -18,48 +18,49 @@ class App extends React.Component {
           'district': '',
           'state': ''
          }],
-        favbanks: JSON.parse(localStorage.getItem('favbanks')) || [],
-         city: ['BANGALORE', 'DELHI', 'HYDERABAD', 'KOLKATA', 'MUMBAI'],
          buttonTitle: 'Select City',
+         bankData: [], 
+         favbanks: JSON.parse(localStorage.getItem('favbanks')) || [],
+         city: ['BANGALORE', 'DELHI', 'HYDERABAD', 'KOLKATA', 'MUMBAI'],
          search: '',
          fav: false,
          searching: false,
-         showBanks: false,
-         loading: false,
-         count: true,
-         flag: 0
-    };
+         showBanks: false
+    };   
  }
 
-  handleChange = (eventKey) => {
-      this.setState({fav: false, showBanks: true , loading: true}) 
-      this.setState({buttonTitle: this.state.city[eventKey]});
-      console.log(this.state.city[eventKey]);
-      const BASE_URL = 'https://vast-shore-74260.herokuapp.com/banks?'; //API BASE URL
-      const FETCH_URL = `${BASE_URL}city=${this.state.city[eventKey]}`; //API FETCH URL
-      console.log(FETCH_URL)
-      fetch(FETCH_URL, {        //fetching json list and storing it into banks
-      method: 'GET'
-      }).then(response => response.json())
-      .then((json) => {
-            this.setState({
-            banks: json.map(item => ({
-              ifsc: item.ifsc,
-              bank_id: item.bank_id,
-              bank_name: item.bank_name,
-              branch: item.branch,
-              address: item.address,
-              city: item.city,
-              district: item.district,
-              state: item.state,
-          })
-        ), loading: false});
+ componentWillMount(){
+  const BASE_URL = 'https://vast-shore-74260.herokuapp.com/banks?';
+        for(let j = 0; j < this.state.city.length ; j++)
+        {
+          const FETCH_URL = `${BASE_URL}city=${this.state.city[j]}`;
+          console.log(FETCH_URL)
+          fetch(FETCH_URL, {        //fetching json list and storing it into banks
+          method: 'GET'
+          }).then(response => response.json())
+          .then((json) => {
+                this.setState({
+                banks: json.map(item => ({
+                  ifsc: item.ifsc,
+                  bank_id: item.bank_id,
+                  bank_name: item.bank_name,
+                  branch: item.branch,
+                  address: item.address,
+                  city: item.city,
+                  district: item.district,
+                  state: item.state,
+              })
+            )});
+              localStorage.setItem(this.state.city[j], JSON.stringify(this.state.banks))
+        })
+      }
+    }
 
-      localStorage.setItem('bank', JSON.stringify(this.state.banks))   
-      console.log(this.state.banks);   
-      });
-    }   
-
+  handleChange=(eventKey)=>{
+      this.setState({buttonTitle: this.state.city[eventKey], fav: false, showBanks: true}) 
+      this.setState({bankData: JSON.parse(localStorage.getItem(this.state.city[eventKey]))});
+  }
+    
 //Mark as Favourite implementation
   handleClick =(action) =>{
     let data = this.state.favbanks;
@@ -67,7 +68,6 @@ class App extends React.Component {
     data = data.filter(row => {
             return row.ifsc.includes(action.original.ifsc)
         })
-
     data.length ? (console.log("It is present")) : (
                         this.setState({
                         favbanks: this.state.favbanks.concat(action.original)
@@ -103,29 +103,24 @@ class App extends React.Component {
             { Header: "STATE",
                 accessor: "state"}   
           ];
-        
-        let data = this.state.banks;
-        if(this.state.fav){
-          data = this.state.favbanks;
-        }
-        else if(this.state.showBanks)
-        {
-          data=this.state.banks;
-        }
-        else if (this.state.searching) {
-          console.log(this.state.searching)
-          data = JSON.parse(localStorage.getItem('bank'))
-          data = data.filter(row => {
-            return row.bank_name.includes(this.state.search) || String(row.bank_id).includes(this.state.search) || row.ifsc.includes(this.state.search) || row.branch.includes(this.state.search) || row.address.includes(this.state.search) || row.city.includes(this.state.search) || row.district.includes(this.state.search) || row.state.includes(this.state.search)
-          })
-        }
 
+      let data = this.state.bankData;
+      if(this.state.fav){
+        data = this.state.favbanks;
+      }
+      else if (this.state.searching) {
+        console.log(this.state.searching)
+        data = data.filter(row => {
+            return row.bank_name.includes(this.state.search) 
+         })
+      }
+        
     return (
       <div>
         <div className="App-title">Bank Search App</div>
         <div className="form-inline">
           <Dropdown>
-          <DropdownButton id="dropdown-item-button" title={this.state.buttonTitle} onSelect={this.handleChange}>
+          <DropdownButton id="dropdown-item-button" title={this.state.buttonTitle} onSelect={this.handleChange} >
             <Dropdown.Item eventKey="0">BANGALORE</Dropdown.Item>
               <Dropdown.Item eventKey="1">DELHI</Dropdown.Item>
               <Dropdown.Item eventKey="2">HYDERABAD</Dropdown.Item>
