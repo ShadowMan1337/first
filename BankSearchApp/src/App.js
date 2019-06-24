@@ -25,15 +25,21 @@ class App extends React.Component {
          search: '',
          fav: false,
          searching: false,
-         showBanks: false
+         showBanks: false,
+         clickCount: 0
     };   
+    this.handleButtonClick = this.handleButtonClick.bind(this)
  }
 
- componentWillMount(){
-  const BASE_URL = 'https://vast-shore-74260.herokuapp.com/banks?';
-        for(let j = 0; j < this.state.city.length ; j++)
-        {
-          const FETCH_URL = `${BASE_URL}city=${this.state.city[j]}`;
+  handleChange=(eventKey)=>{
+      this.setState({buttonTitle: this.state.city[eventKey], fav: false, showBanks: true}) 
+      if(JSON.parse(localStorage.getItem(this.state.city[eventKey])))
+      {
+        this.setState({bankData: JSON.parse(localStorage.getItem(this.state.city[eventKey]))});
+        }
+      else{
+          const BASE_URL = 'https://vast-shore-74260.herokuapp.com/banks?'
+          const FETCH_URL = `${BASE_URL}city=${this.state.city[eventKey]}`;
           console.log(FETCH_URL)
           fetch(FETCH_URL, {        //fetching json list and storing it into banks
           method: 'GET'
@@ -51,18 +57,15 @@ class App extends React.Component {
                   state: item.state,
               })
             )});
-              localStorage.setItem(this.state.city[j], JSON.stringify(this.state.banks))
-        })
-      }
+              localStorage.setItem(this.state.city[eventKey], JSON.stringify(this.state.banks))
+              this.setState({bankData: JSON.parse(localStorage.getItem(this.state.city[eventKey]))});
+          })
+        }
+        
     }
 
-  handleChange=(eventKey)=>{
-      this.setState({buttonTitle: this.state.city[eventKey], fav: false, showBanks: true}) 
-      this.setState({bankData: JSON.parse(localStorage.getItem(this.state.city[eventKey]))});
-  }
-    
 //Mark as Favourite implementation
-  handleClick =(action) =>{
+  handleRowClick =(action) =>{
     let data = this.state.favbanks;
     console.log(action.original.ifsc)
     data = data.filter(row => {
@@ -75,6 +78,14 @@ class App extends React.Component {
                             localStorage.setItem('favbanks', JSON.stringify(this.state.favbanks))
                           }
                       ))
+  }
+
+  handleButtonClick(){
+    this.setState({banks: [], fav: true, clickCount: this.state.clickCount+1})
+    if(this.state.clickCount%2!==0){
+      this.setState({bankData: this.state.bankData
+        , fav: false, showBanks: true})
+    }
   }
 
   render() {
@@ -114,6 +125,10 @@ class App extends React.Component {
             return row.bank_name.includes(this.state.search) 
          })
       }
+      else if (this.state.showBanks)
+          {
+            data = this.state.bankData;
+          }
         
     return (
       <div>
@@ -131,7 +146,7 @@ class App extends React.Component {
         </div>
         <div>
           Click on any row to Mark as Favourite
-          <button className="button" onClick={()=>this.setState({banks: [], fav:true})}>View Favourites</button>
+          <button className="button"  onClick={this.handleButtonClick}>View Favourites</button>
         <hr />
         Search: <input 
                   value={this.state.search}
@@ -147,7 +162,7 @@ class App extends React.Component {
           getTdProps={(state, rowInfo, column, instance) => {
           return {
             onClick: (e, handleOriginal) => {
-              this.handleClick(rowInfo)
+              this.handleRowClick(rowInfo)
                 
               if (handleOriginal) {
               handleOriginal()
